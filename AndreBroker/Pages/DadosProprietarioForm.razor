@@ -1,0 +1,134 @@
+﻿@using Data
+
+<h3>DadosProprietario</h3>
+
+<EditForm Model="data" OnValidSubmit="SaveForm">
+    <FluentValidationValidator />
+
+    <div>
+        <label for="nome" class="desc">Nome</label>
+        <div><InputText id="nome" @bind-Value="data.Nome" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Nome"></ValidationMessage></div>
+    </div>
+
+
+    <RadioSimNao Legend="O imóvel está em seu nome?" GroupName="Test" Id="imovel_em_seu_nome" @bind-Value="data.ImovelEmSeuNome"></RadioSimNao>
+
+
+    @if (!data.ImovelEmSeuNome)
+    {
+        <div>
+            <label for="nomeProprietario" class="desc">Nome Completo do Propriet&aacute;rio</label>
+            <div><InputText id="nomeProprietario" @bind-Value="data.NomeProprietario" class="text"></InputText></div>
+            <div><ValidationMessage For="() => data.NomeProprietario"></ValidationMessage></div>
+        </div>
+
+        <RadioSimNao Legend="Você possui autorização para venda?" GroupName="autorizacao_venda"
+                 Id="autorizacao_venda" @bind-Value="data.AutorizacaoVenda"></RadioSimNao>
+    }
+
+    <div>
+        <label for="telefone" class="desc">Telefone</label>
+        <div><InputText id="telefone" @bind-Value="data.Telefone" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Telefone"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="celular" class="desc">Celular</label>
+        <div><InputText id="celular" @bind-Value="data.Celular" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Celular"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                &Eacute; Whatsapp?
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="isWhatsApp" @bind-Value="data.IsWhatsApp"></InputCheckbox>
+                    <label for="isWhatsApp" class="desc">Sim</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Tipo de Telefone
+            </legend>
+            <div>
+                <InputRadioGroup Name="TipoTelefone" @bind-Value="data.TipoTelefone">
+                    <div>
+                        <InputRadio id="tipo_telefone_pessoal" Value="@TipoTelefoneEnum.PESSOAL" Name="TipoTelefone"></InputRadio>
+                        <label for="tipo_telefone_pessoal" class="choice">Pessoal</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="tipo_telefone_trabalho" Value="@TipoTelefoneEnum.TRABALHO" Name="TipoTelefone"></InputRadio>
+                        <label for="tipo_telefone_trabalho" class="choice">Trabalho</label>
+                    </div>
+                </InputRadioGroup>
+
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <label for="email" class="desc">Email</label>
+        <div><InputText id="email" @bind-Value="data.Email" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Email"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="cpf" class="desc">CPF</label>
+        <div><InputText id="cpf" @bind-Value="data.CPF" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.CPF"></ValidationMessage></div>
+    </div>
+
+    @*<InputSelect @bind-Value="container.IdCliente">
+        <option value="">Selecione um Cliente</option>
+        @foreach (ClienteModel cliente in clientes) {
+        <option value="@cliente.Id">@cliente.Nome</option>
+        }
+        </InputSelect>*@
+
+    @*<div>
+        <label class="desc" id="title106" for="Field106">
+        Select a Choice
+        </label>
+        <div>
+        <select id="Field106" name="Field106" class="field select medium" tabindex="11">
+        <option value="First Choice">First Choice</option>
+        <option value="Second Choice">Second Choice</option>
+        <option value="Third Choice">Third Choice</option>
+        </select>
+        </div>
+        </div>*@
+
+
+
+    <div class="proximo">
+        <div>
+            <button type="submit">Pr&oacute;ximo</button>
+        </div>
+    </div>
+
+</EditForm>
+
+<span>@result</span>
+
+@code {
+    [Parameter]
+    public EventCallback<int> OnVoltarClicked { get; set; }
+
+    DadosProprietario data = new();
+    string result = "";
+
+    public async Task SaveForm()
+    {
+        result = "Form Saved";
+        await OnVoltarClicked.InvokeAsync(1);
+    }
+}

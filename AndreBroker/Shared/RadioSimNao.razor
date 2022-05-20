@@ -1,0 +1,43 @@
+﻿<div>
+    <fieldset>
+        <legend class="desc">
+            @Legend
+        </legend>
+        <div>
+            <InputRadioGroup Name="@GroupName" ValueExpression="@(()=>Value)" Value="@Value" ValueChanged="@((bool v) => OnValueChanged(v))">
+                <div>
+                    <InputRadio id="@(Id + @"_sim")" Value="true" Name="@GroupName"></InputRadio>
+                    <label for="@(Id + @"_sim")" class="choice">Sim</label>
+                </div>
+
+                <div>
+                    <InputRadio id="@(Id + @"_nao")" Value="false" Name="@GroupName"></InputRadio>
+                    <label for="@(Id + @"_nao")" class="choice">N&atilde;o</label>
+                </div>
+            </InputRadioGroup>
+        </div>
+    </fieldset>
+</div>
+
+@code {
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public string GroupName { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string Legend { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    Task OnValueChanged(bool value)
+    {
+        Value = value;
+        return ValueChanged.InvokeAsync(Value);
+    }
+}

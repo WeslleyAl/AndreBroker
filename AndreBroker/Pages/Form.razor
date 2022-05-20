@@ -1,0 +1,30 @@
+﻿@page "/"
+@using Data;
+
+<header>
+    <h2>Título do Form</h2>
+    <div>Uma breve descriçãod o formulário a ser preenchido</div>
+</header>
+
+<div>Passo @step de 3:</div>
+
+
+
+@if (step == 1)
+{
+    <DadosProprietarioForm OnVoltarClicked="MoveStep"></DadosProprietarioForm>
+}
+else if (step == 2)
+{
+
+    <DadosPrimarioImovelForm OnVoltarClicked="MoveStep"></DadosPrimarioImovelForm>
+}
+
+@code {
+    int step = 1;
+
+    public void MoveStep(int v)
+    {
+        step += v;
+    }
+}
