@@ -1,0 +1,36 @@
+﻿@using Data
+
+<h3>DadosPrimarioImovel</h3>
+
+Testando mudança
+
+<EditForm Model="data" OnValidSubmit="SaveForm">
+    <div>
+        <div>
+            <button @onclick="Voltar">Voltar</button>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <button type="submit">Salvar</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<int> OnVoltarClicked { get; set; }
+
+    DadosProprietario data = new();
+
+    public void SaveForm()
+    {
+        //result = "Form Saved";
+    }
+
+    public async Task Voltar()
+    {
+        await OnVoltarClicked.InvokeAsync(-1);
+    }
+}
