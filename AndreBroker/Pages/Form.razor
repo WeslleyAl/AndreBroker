@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Data;
+@using System.Text.Json
 
 <header>
     <h2>Título do Form</h2>
@@ -12,19 +13,39 @@
 
 @if (step == 1)
 {
-    <DadosProprietarioForm OnVoltarClicked="MoveStep"></DadosProprietarioForm>
+    <DadosProprietarioForm OnVoltarClicked="MoveStep" data="dadosProprietario"></DadosProprietarioForm>
 }
 else if (step == 2)
 {
 
-    <DadosPrimarioImovelForm OnVoltarClicked="MoveStep"></DadosPrimarioImovelForm>
+    <DadosPrimarioImovelForm OnVoltarClicked="MoveStep" data="dadosPrimarios"></DadosPrimarioImovelForm>
+}
+else if (step == 3)
+{
+
+    <DadosEstruturaisImovelForm OnVoltarClicked="MoveStep" data="dadosEstruturais" comissao="dadosPrimarios.Comissao"></DadosEstruturaisImovelForm>
+}else if (step == 4)
+{
+
+    <DadosEmailForm OnVoltarClicked="MoveStep" content="@GetContent()"></DadosEmailForm>
 }
 
 @code {
     int step = 1;
 
+    DadosProprietario dadosProprietario = new();
+    DadosPrimarioImovel dadosPrimarios = new();
+    DadosEstruturaisImovel dadosEstruturais = new();
+
     public void MoveStep(int v)
     {
         step += v;
+    }
+
+    public string GetContent()
+    {
+        var data = new { dadosProprietario, dadosPrimarios, dadosEstruturais };
+
+        return JsonSerializer.Serialize(data);
     }
 }

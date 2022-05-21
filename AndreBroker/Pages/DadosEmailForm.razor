@@ -1,0 +1,87 @@
+﻿@using Data
+@using MailKit.Net.Smtp
+@using MimeKit
+
+<h3>Dados de Email</h3>
+
+<EditForm Model="data" OnValidSubmit="SaveForm">
+    
+    <div>
+        <label for="SMTP" class="desc">SMTP</label>
+        <div><InputText id="SMTP" @bind-Value="data.SMTP" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.SMTP"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="Port" class="desc">Porta</label>
+        <div><InputNumber id="Port" @bind-Value="data.Port" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.Port"></ValidationMessage></div>
+    </div>
+    
+    <div>
+        <label for="Email" class="desc">Email</label>
+        <div><InputText id="Email" @bind-Value="data.Email" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Email"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="Senha" class="desc">Senha</label>
+        <div><InputText type="password" id="Senha" @bind-Value="data.Senha" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Senha"></ValidationMessage></div>
+    </div>
+
+    <span>@Mensagem</span>
+
+    <div>
+        <div>
+            <button type="button" @onclick="Voltar">Voltar</button>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <button type="submit">Salvar</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<int> OnVoltarClicked { get; set; }
+
+    [Parameter]
+    public string content { get; set; }
+
+    DadosEmail data = new();
+    string Mensagem = "Aguardando Informações";
+
+    public async Task SaveForm()
+    {
+        Mensagem = "Enviando Email - Se essa mensagem permanecer por muito tempo, o envio falhou. Habilite 'Less secure app access' nas suas opções de segurança.";
+
+        MimeMessage MailMessage = new();
+        MailMessage.From.Add(new MailboxAddress("Andre Broker", data.Email));
+        MailMessage.To.Add(new MailboxAddress("Andre Broker", data.Email));
+        MailMessage.Subject = "Preenchimento do Form";
+        MailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+        {
+            Text = content
+        };
+
+        using(var smtpClient = new SmtpClient())
+        {
+            smtpClient.Connect(data.SMTP, data.Port, true);
+            smtpClient.Authenticate(data.Email, data.Senha);
+            await smtpClient.SendAsync(MailMessage);
+
+            Mensagem = "Email Enviado";
+            smtpClient.Disconnect(true);
+        }
+    }
+
+    public async Task Voltar()
+    {
+        await OnVoltarClicked.InvokeAsync(-1);
+    }
+
+}

@@ -1,0 +1,373 @@
+﻿@using Data
+
+<h3>DadosEstruturaisImovel</h3>
+
+<EditForm Model="data" OnValidSubmit="SaveForm">
+    <FluentValidationValidator />
+
+    <div>
+        <label for="quantidadequartos" class="desc">Quantos Quartos</label>
+        <div><InputNumber id="quantidadequartos" @bind-Value="data.QuantidadeQuartos" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.QuantidadeQuartos"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="quantidadesuites" class="desc">Quantas Su&iacute;tes</label>
+        <div><InputNumber id="quantidadesuites" @bind-Value="data.QuantidadeSuites" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.QuantidadeSuites"></ValidationMessage></div>
+    </div>
+
+    <RadioSimNao Legend="Possui Closet?" GroupName="possui_closet"
+                 Id="possui_closet" @bind-Value="data.PossuiCloset"></RadioSimNao>
+
+    <RadioSimNao Legend="Algum Cômodo Reversível?" GroupName="comodo_reversivel"
+                 Id="comodo_reversivel" @bind-Value="data.PossuiComodoReversivel"></RadioSimNao>
+
+    @if (data.PossuiComodoReversivel)
+    {
+        <div>
+            <fieldset>
+                <legend class="desc">
+                    C&ocirc;modo Revers&iacute;vel
+                </legend>
+                <div>
+                    <div>
+                        <InputCheckbox id="comodoreversivelsala" @bind-Value="data.ComodoReversivelSala"></InputCheckbox>
+                        <label for="comodoreversivelsala" class="desc">Sala</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="comodoreversivelquarto" @bind-Value="data.ComodoReversivelQuarto"></InputCheckbox>
+                        <label for="comodoreversivelquarto" class="desc">Quarto</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="comodoreversivelbanheiro" @bind-Value="data.ComodoReversivelBanheiro"></InputCheckbox>
+                        <label for="comodoreversivelbanheiro" class="desc">Banheiro</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    }
+
+    <div>
+        <label for="quantidadebanheiros" class="desc">Quantos Banheiros</label>
+        <div><InputNumber id="quantidadebanheiros" @bind-Value="data.QuantidadeBanheiros" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.QuantidadeBanheiros"></ValidationMessage></div>
+    </div>
+
+    <RadioSimNao Legend="Possui Lavabo?" GroupName="possui_lavabo"
+                 Id="possui_lavabo" @bind-Value="data.PossuiLavabo"></RadioSimNao>
+
+    <RadioSimNao Legend="Hidromassagem?" GroupName="hidromassagem"
+                 Id="hidromassagem" @bind-Value="data.PossuiHidromassagem"></RadioSimNao>
+
+    <div>
+        <label for="quantidadesalas" class="desc">Quantas Salas</label>
+        <div><InputNumber id="quantidadesalas" @bind-Value="data.QuantidadeSalas" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.QuantidadeSalas"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Possui
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="possuivaranda" @bind-Value="data.PossuiVaranda"></InputCheckbox>
+                    <label for="possuivaranda" class="desc">Varanda</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuisacada" @bind-Value="data.PossuiSacada"></InputCheckbox>
+                    <label for="possuisacada" class="desc">Sacada</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <RadioSimNao Legend="Varanda Gourmet?" GroupName="varanda_gourmet"
+                 Id="varanda_gourmet" @bind-Value="data.PossuiVarandaGourmet"></RadioSimNao>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Cozinha
+            </legend>
+            <div>
+                <InputRadioGroup Name="TipoCozinha" @bind-Value="data.TipoCozinha">
+                    <div>
+                        <InputRadio id="tipo_cozinha_padrao" Value="@TipoCozinhaEnum.PADRAO" Name="TipoCozinha"></InputRadio>
+                        <label for="tipo_cozinha_padrao" class="choice">Padr&atilde;o</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="tipo_cozinha_americana" Value="@TipoCozinhaEnum.AMERICANA" Name="TipoCozinha"></InputRadio>
+                        <label for="tipo_cozinha_americana" class="choice">Americana</label>
+                    </div>
+                </InputRadioGroup>
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Depend&ecirc;ncia
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="possuidependenciaquarto" @bind-Value="data.PossuiDependenciaQuarto"></InputCheckbox>
+                    <label for="possuidependenciaquarto" class="desc">Quarto</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuidependenciabanheiro" @bind-Value="data.PossuiDependenciaBanheiro"></InputCheckbox>
+                    <label for="possuidependenciabanheiro" class="desc">Banheiro</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <RadioSimNao Legend="Despensa?" GroupName="despensa"
+                 Id="despensa" @bind-Value="data.PossuiDespensa"></RadioSimNao>
+
+    <RadioSimNao Legend="Área de Serviço?" GroupName="area_servico"
+                 Id="area_servico" @bind-Value="data.PossuiAreaServico"></RadioSimNao>
+
+    <div>
+        <label for="tipopiso" class="desc">Qual o tipo de piso</label>
+        <div><InputText id="tipopiso" @bind-Value="data.TipoPiso" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.TipoPiso"></ValidationMessage></div>
+    </div>
+
+    <RadioSimNao Legend="Possui água aquecida a gás?" GroupName="possuiaguaaquecidaagas"
+                 Id="possuiaguaaquecidaagas" @bind-Value="data.PossuiAguaAquecidaAGas"></RadioSimNao>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Arm&aacute;rios Embutidos
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="possuiarmarioembutidosala" @bind-Value="data.PossuiArmarioEmbutidoSala"></InputCheckbox>
+                    <label for="possuiarmarioembutidosala" class="desc">Sala</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarmarioembutidoquarto" @bind-Value="data.PossuiArmarioEmbutidoQuarto"></InputCheckbox>
+                    <label for="possuiarmarioembutidoquarto" class="desc">Quarto</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarmarioembutidobanheiro" @bind-Value="data.PossuiArmarioEmbutidoBanheiro"></InputCheckbox>
+                    <label for="possuiarmarioembutidobanheiro" class="desc">Banheiro</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarmarioembutidodespensa" @bind-Value="data.PossuiArmarioEmbutidoDespensa"></InputCheckbox>
+                    <label for="possuiarmarioembutidodespensa" class="desc">Despensa</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarmarioembutidocozinha" @bind-Value="data.PossuiArmarioEmbutidoCozinha"></InputCheckbox>
+                    <label for="possuiarmarioembutidocozinha" class="desc">Cozinha</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarmarioembutidoescritorio" @bind-Value="data.PossuiArmarioEmbutidoEscritorio"></InputCheckbox>
+                    <label for="possuiarmarioembutidoescritorio" class="desc">Escrit&oacute;rio</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Ar Condicionado
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="possuiarcondicionadosala" @bind-Value="data.PossuiArCondicionadoSala"></InputCheckbox>
+                    <label for="possuiarcondicionadosala" class="desc">Sala</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarcondicionadoquarto" @bind-Value="data.PossuiArCondicionadoQuarto"></InputCheckbox>
+                    <label for="possuiarcondicionadoquarto" class="desc">Quarto</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarcondicionadobanheiro" @bind-Value="data.PossuiArCondicionadoBanheiro"></InputCheckbox>
+                    <label for="possuiarcondicionadobanheiro" class="desc">Banheiro</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarcondicionadodespensa" @bind-Value="data.PossuiArCondicionadoDespensa"></InputCheckbox>
+                    <label for="possuiarcondicionadodespensa" class="desc">Despensa</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarcondicionadocozinha" @bind-Value="data.PossuiArCondicionadoCozinha"></InputCheckbox>
+                    <label for="possuiarcondicionadocozinha" class="desc">Cozinha</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="possuiarcondicionadoescritorio" @bind-Value="data.PossuiArCondicionadoEscritorio"></InputCheckbox>
+                    <label for="possuiarcondicionadoescritorio" class="desc">Escrit&oacute;rio</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <label for="quantidadevagas" class="desc">Quantas Vagas</label>
+        <div><InputNumber id="quantidadevagas" @bind-Value="data.QuantidadeVagas" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.QuantidadeVagas"></ValidationMessage></div>
+    </div>
+
+    @if (data.QuantidadeVagas > 0)
+    {
+        <RadioSimNao Legend="Coberta?" GroupName="coberta" Id="coberta" @bind-Value="data.PossuiVagaCoberta"></RadioSimNao>
+        <RadioSimNao Legend="Solta?" GroupName="solta" Id="solta" @bind-Value="data.PossuiVagaSolta"></RadioSimNao>
+        <RadioSimNao Legend="Na Escritura?" GroupName="na_escritura" Id="na_escritura" @bind-Value="data.PossuiVagaNaEscritura"></RadioSimNao>
+
+        <div>
+            <label class="desc" id="tipo_label" for="tipo">
+                Caracter&iacute;stica
+            </label>
+            <div>
+                <InputSelect id="caracteristicavaga" class="field select medium" @bind-Value="data.CaracteristicaVaga">
+                    <option value="@CaracteristicaVagaEnum.FIXA">Fixa</option>
+                    <option value="@CaracteristicaVagaEnum.RODIZIO">Rod&iacute;zio</option>
+                    <option value="@CaracteristicaVagaEnum.PARQUEAMENTO">Parqueamento</option>
+                </InputSelect>
+            </div>
+        </div>
+    }
+
+    <RadioSimNao Legend="Possui Área de Lazer?" GroupName="possuiarealazer" Id="possuiarealazer" @bind-Value="data.PossuiAreaLazer"></RadioSimNao>
+
+    @if (data.PossuiAreaLazer)
+    {
+        <div>
+            <fieldset>
+                <legend class="desc">
+                    Quais
+                </legend>
+                <div>
+                    <div>
+                        <InputCheckbox id="possuipiscina" @bind-Value="data.PossuiPiscina"></InputCheckbox>
+                        <label for="possuipiscina" class="desc">Piscina</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuichurrasqueira" @bind-Value="data.PossuiChurrasqueira"></InputCheckbox>
+                        <label for="possuichurrasqueira" class="desc">Churrasqueira</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuisauna" @bind-Value="data.PossuiSauna"></InputCheckbox>
+                        <label for="possuisauna" class="desc">Sauna</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuicampoesporte" @bind-Value="data.PossuiCampoEsporte"></InputCheckbox>
+                        <label for="possuicampoesporte" class="desc">Campo de Esporte</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuiplayground" @bind-Value="data.PossuiPlayground"></InputCheckbox>
+                        <label for="possuiplayground" class="desc">Playground</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuiquintal" @bind-Value="data.PossuiQuintal"></InputCheckbox>
+                        <label for="possuiquintal" class="desc">Quintal</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuisalaofesta" @bind-Value="data.PossuiSalaoFesta"></InputCheckbox>
+                        <label for="possuisalaofesta" class="desc">Sal&atilde;o de Festas</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuiacademia" @bind-Value="data.PossuiAcademia"></InputCheckbox>
+                        <label for="possuiacademia" class="desc">Academia</label>
+                    </div>
+
+                    <div>
+                        <InputCheckbox id="possuibrinquedoteca" @bind-Value="data.PossuiBrinquedoteca"></InputCheckbox>
+                        <label for="possuibrinquedoteca" class="desc">Brinquedoteca</label>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    }
+
+    <RadioSimNao Legend="Seria possível uma visita pra que possa ser tirado fotos e filmagem?" GroupName="visita"
+                 Id="visita" @bind-Value="data.AceitaVisitaFotoFilmagem"></RadioSimNao>
+
+    <div>
+        <div>
+            Peço a gentileza de enviar uma cópia\foto do IPTU, Escritura e se possível também o espelho do condomínio
+            para que possamos adicionar ao cadastro de seu imóvel.pelo zap ou para o email
+            <a href="mailto:andrevieira.broker@gmail.com">andrevieira.broker@gmail.com</a>
+        </div>
+    </div>
+
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="autorizointermediacao" @bind-Value="data.AutorizoIntermediacao"></InputCheckbox>
+                    <label for="autorizointermediacao" class="desc">Autorizo a intermediação da venda do imóvel (Adicionar se ele optou por Exclusividade ou não) 
+                        acima pelo corretor\captador CARLOS ANDRÉ MACHADO VIEIRA sob o CRECI-RJ 086232, e concordo com o pagamento da 
+                        comissão de @(@"R$" + comissao) calculado sobre o valor de venda do imóvel, a ser pago no ato da assinatura do 
+                        contrato de compra e venda ou escritura.</label>
+
+                    <div><ValidationMessage For="() => data.AutorizoIntermediacao"></ValidationMessage></div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <div>
+            <button type="button" @onclick="Voltar">Voltar</button>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <button type="submit">Pr&oacute;ximo</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public EventCallback<int> OnVoltarClicked { get; set; }
+
+    [Parameter]
+    public DadosEstruturaisImovel data { get; set; }
+
+    [Parameter]
+    public float comissao { get; set; }
+
+    public async Task SaveForm()
+    {
+        await OnVoltarClicked.InvokeAsync(1);
+    }
+
+    public async Task Voltar()
+    {
+        await OnVoltarClicked.InvokeAsync(-1);
+    }
+}

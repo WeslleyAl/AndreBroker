@@ -1,12 +1,15 @@
-﻿namespace AndreBroker.Data;
+﻿using FluentValidation;
+
+namespace AndreBroker.Data;
 
 public class DadosPrimarioImovel
 {
     public string Logradouro { get; set; }
     public string Complemento { get; set; }
     public int Numero { get; set; }
-    public string Referência { get; set; }
+    public string Referencia { get; set; }
     public string CEP { get; set; }
+    public string Bairro { get; set; }
     public string Cidade { get; set; }
     public string Estado { get; set; }
 
@@ -17,10 +20,9 @@ public class DadosPrimarioImovel
     public PosicaoImovelEnum PosicaoImovel { get; set; }
 
     public string MatriculaImovel { get; set; }
-
     public string IPTUMatricula { get; set; }
-
     public float IPTUValor { get; set; }
+    public TipoValorEnum TipoValor { get; set; }
 
     public int AreaTotal { get; set; }
     public int AreaPrivativa { get; set; }
@@ -32,10 +34,43 @@ public class DadosPrimarioImovel
 
     public bool AceitaFinanciamento { get; set; }
     public bool EstudaPropostaPermuta { get; set; }
-    public TipoCapitacaoEnum TipoCapitacao { get; set; }
+    //public TipoCapitacaoEnum TipoCapitacao { get; set; }
+    public bool TipoCapitacaoVenda { get; set; }
+    public bool TipoCapitacaoLocacao { get; set; }
     public bool Portaria24h { get; set; }
     public bool AceitaPet { get; set; }
     public float ValorVenda { get; set; }
+    public float Comissao { get; set; }
 
     public string Descricao { get; set; }
+}
+
+public class DadosPrimarioImovelValidator : AbstractValidator<DadosPrimarioImovel>
+{
+    public DadosPrimarioImovelValidator()
+    {
+        RuleFor(obj => obj.CEP)
+        .NotEmpty().WithMessage("Informe um CEP válido");
+
+        RuleFor(obj => obj.Numero)
+        .NotEmpty().WithMessage("Informe o número do imóvel");
+
+        RuleFor(obj => obj.Complemento)
+        .NotEmpty().WithMessage("Informe o complemento do endereço");
+
+        RuleFor(obj => obj.NomeCondominio)
+        .NotEmpty().WithMessage("Informe o nome do condomínio");
+
+        RuleFor(obj => obj.MatriculaImovel)
+        .NotEmpty().WithMessage("Informe a matrícula do imóvel");
+
+        RuleFor(obj => obj.IPTUValor)
+        .GreaterThan(0).WithMessage("Informe um valor para o IPTU");
+
+        RuleFor(obj => obj.AreaPrivativa)
+        .GreaterThan(0).WithMessage("Informe quantos M2 de área privativa o imóvel possui");
+
+        RuleFor(obj => obj.ValorVenda)
+        .GreaterThan(0).WithMessage("Informe o valor de venda");
+    }
 }

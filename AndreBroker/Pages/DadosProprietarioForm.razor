@@ -1,6 +1,6 @@
 ﻿@using Data
 
-<h3>DadosProprietario</h3>
+<h3>Dados do Proprietario</h3>
 
 <EditForm Model="data" OnValidSubmit="SaveForm">
     <FluentValidationValidator />
@@ -12,7 +12,7 @@
     </div>
 
 
-    <RadioSimNao Legend="O imóvel está em seu nome?" GroupName="Test" Id="imovel_em_seu_nome" @bind-Value="data.ImovelEmSeuNome"></RadioSimNao>
+    <RadioSimNao Legend="O imóvel está em seu nome?" GroupName="imovel_em_seu_nome" Id="imovel_em_seu_nome" @bind-Value="data.ImovelEmSeuNome"></RadioSimNao>
 
 
     @if (!data.ImovelEmSeuNome)
@@ -87,28 +87,6 @@
         <div><ValidationMessage For="() => data.CPF"></ValidationMessage></div>
     </div>
 
-    @*<InputSelect @bind-Value="container.IdCliente">
-        <option value="">Selecione um Cliente</option>
-        @foreach (ClienteModel cliente in clientes) {
-        <option value="@cliente.Id">@cliente.Nome</option>
-        }
-        </InputSelect>*@
-
-    @*<div>
-        <label class="desc" id="title106" for="Field106">
-        Select a Choice
-        </label>
-        <div>
-        <select id="Field106" name="Field106" class="field select medium" tabindex="11">
-        <option value="First Choice">First Choice</option>
-        <option value="Second Choice">Second Choice</option>
-        <option value="Third Choice">Third Choice</option>
-        </select>
-        </div>
-        </div>*@
-
-
-
     <div class="proximo">
         <div>
             <button type="submit">Pr&oacute;ximo</button>
@@ -117,18 +95,17 @@
 
 </EditForm>
 
-<span>@result</span>
-
 @code {
     [Parameter]
     public EventCallback<int> OnVoltarClicked { get; set; }
 
-    DadosProprietario data = new();
-    string result = "";
+    [Parameter]
+    public DadosProprietario data { get; set; }
+
+    //DadosProprietario data = new();
 
     public async Task SaveForm()
     {
-        result = "Form Saved";
         await OnVoltarClicked.InvokeAsync(1);
     }
 }

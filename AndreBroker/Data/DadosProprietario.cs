@@ -28,7 +28,7 @@ public class DadosProprietarioValidator: AbstractValidator<DadosProprietario>
         RuleFor(obj => obj.NomeProprietario)
         .NotEmpty().When(obj => !obj.ImovelEmSeuNome).WithMessage("Informe o nome completo do proprietário");
 
-        //RuleFor(obj => obj.Celular)
-        //.NotEmpty().WithMessage("Informe um número de celular válido");
+        RuleFor(obj => obj.Celular)
+        .NotEmpty().WithMessage("Informe um número de celular válido");
     }
 }

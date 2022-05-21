@@ -1,19 +1,297 @@
 ﻿@using Data
+@using System.Text.Json
 
-<h3>DadosPrimarioImovel</h3>
+@inject IHttpClientFactory ClientFactory
 
-Testando mudança
+<h3>Dados Prim&aacute;rios do Im&oacute;vel</h3>
 
 <EditForm Model="data" OnValidSubmit="SaveForm">
+    <FluentValidationValidator />
+
+    <div>
+        <label for="cep" class="desc">CEP</label>
+        <div><InputText id="cep" Value="@data.CEP" ValueChanged="(v) => BuscarEndereco(v)" ValueExpression="()=>data.CEP" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.CEP"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="logradouro" class="desc">Logradouro</label>
+        <div><InputText id="logradouro" @bind-Value="data.Logradouro" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Logradouro"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="numero" class="desc">N&uacute;mero</label>
+        <div><InputNumber id="numero" @bind-Value="data.Numero" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.Numero"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="complemento" class="desc">Complemento</label>
+        <div><InputText id="complemento" @bind-Value="data.Complemento" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Complemento"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="referencia" class="desc">Refer&ecirc;ncia</label>
+        <div><InputText id="referencia" @bind-Value="data.Referencia" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Referencia"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="bairro" class="desc">Bairro</label>
+        <div><InputText id="bairro" @bind-Value="data.Bairro" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Bairro"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="cidade" class="desc">Cidade</label>
+        <div><InputText id="cidade" @bind-Value="data.Cidade" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Cidade"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="estado" class="desc">Estado</label>
+        <div><InputText id="estado" @bind-Value="data.Estado" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.Estado"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">Finalidade</legend>
+            <div>
+                <InputRadioGroup Name="Finalidade" @bind-Value="data.Finalidade">
+                    <div>
+                        <InputRadio id="finalidade_residencial" Value="@FinalidadeImovelEnum.RESIDENCIAL" Name="Finalidade"></InputRadio>
+                        <label for="finalidade_residencial" class="choice">Residencial</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="finalidade_comercial" Value="@FinalidadeImovelEnum.COMERCIAL" Name="Finalidade"></InputRadio>
+                        <label for="finalidade_comercial" class="choice">Comercial</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="finalidade_misto" Value="@FinalidadeImovelEnum.MISTO" Name="Finalidade"></InputRadio>
+                        <label for="finalidade_misto" class="choice">Misto</label>
+                    </div>
+                </InputRadioGroup>
+
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <label class="desc" id="tipo_label" for="tipo">
+            Tipo
+        </label>
+        <div>
+            <InputSelect id="tipo" class="field select medium" @bind-Value="data.Tipo">
+                <option value="@TipoImovelEnum.APARTAMENTO">Apartamento</option>
+                <option value="@TipoImovelEnum.COBERTURA_DUPLEX">Cobertura Duplex</option>
+                <option value="@TipoImovelEnum.COBERTURA_LINEAR">Cobertura Linear</option>
+                <option value="@TipoImovelEnum.CASA">Casa</option>
+                <option value="@TipoImovelEnum.SOBRADO">Sobrado</option>
+            </InputSelect>
+        </div>
+    </div>
+
+    <div>
+        <label for="nomecondominio" class="desc">Nome do Condom&iacute;nio</label>
+        <div><InputText id="nomecondominio" @bind-Value="data.NomeCondominio" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.NomeCondominio"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Posi&ccedil;&atilde;o do Sol
+            </legend>
+            <div>
+                <InputRadioGroup Name="PosicaoSol" @bind-Value="data.PosicaoSol">
+                    <div>
+                        <InputRadio id="posicao_sol_manha" Value="@PosicaoSolEnum.MANHA" Name="PosicaoSol"></InputRadio>
+                        <label for="posicao_sol_manha" class="choice">Manh&atilde;</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="posicao_sol_tarde" Value="@PosicaoSolEnum.TARDE" Name="PosicaoSol"></InputRadio>
+                        <label for="posicao_sol_tarde" class="choice">Tarde</label>
+                    </div>
+                </InputRadioGroup>
+
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Posi&ccedil;&atilde;o do Im&otilde;vel
+            </legend>
+            <div>
+                <InputRadioGroup Name="PosicaoImovel" @bind-Value="data.PosicaoImovel">
+                    <div>
+                        <InputRadio id="posicao_imovel_frente" Value="@PosicaoImovelEnum.FRENTE" Name="PosicaoImovel"></InputRadio>
+                        <label for="posicao_imovel_frente" class="choice">Frente</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="posicao_imovel_lateral" Value="@PosicaoImovelEnum.LATERAL" Name="PosicaoImovel"></InputRadio>
+                        <label for="posicao_imovel_lateral" class="choice">Lateral</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="posicao_imovel_fundos" Value="@PosicaoImovelEnum.FUNDOS" Name="PosicaoImovel"></InputRadio>
+                        <label for="posicao_imovel_fundos" class="choice">Fundos</label>
+                    </div>
+                </InputRadioGroup>
+
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <label for="matriculaimovel" class="desc">Matr&iacute;cula do Im&oacute;vel</label>
+        <div><InputText id="matriculaimovel" @bind-Value="data.MatriculaImovel" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.MatriculaImovel"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="iptumatricula" class="desc">IPTU(Matr&iacute;cula)</label>
+        <div><InputText id="iptumatricula" @bind-Value="data.IPTUMatricula" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.IPTUMatricula"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="iptuvalor" class="desc">IPTU(Valor)</label>
+        <div><InputNumber id="iptuvalor" @bind-Value="data.IPTUValor" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.IPTUValor"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Per&iacute;odo de Cobran&ccedil;a
+            </legend>
+            <div>
+                <InputRadioGroup Name="TipoValor" @bind-Value="data.TipoValor">
+                    <div>
+                        <InputRadio id="tipo_valor_mensal" Value="@TipoValorEnum.MENSAL" Name="TipoValor"></InputRadio>
+                        <label for="tipo_valor_mensal" class="choice">Mensal</label>
+                    </div>
+
+                    <div>
+                        <InputRadio id="tipo_valor_anual" Value="@TipoValorEnum.ANUAL" Name="TipoValor"></InputRadio>
+                        <label for="tipo_valor_anual" class="choice">Anual</label>
+                    </div>
+                </InputRadioGroup>
+            </div>
+        </fieldset>
+    </div>
+
+    <div>
+        <label for="areatotal" class="desc">&Aacute;rea Total(M2)</label>
+        <div><InputNumber id="areatotal" @bind-Value="data.AreaTotal" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.AreaTotal"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="areaprivativa" class="desc">&Aacute;rea Privativa(M2)</label>
+        <div><InputNumber id="areaprivativa" @bind-Value="data.AreaPrivativa" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.AreaPrivativa"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label class="desc" id="tsituacaoimovel_label" for="situacaoimovel">
+            Tipo
+        </label>
+        <div>
+            <InputSelect id="situacaoimovel" class="field select medium" @bind-Value="data.SituacaoImovel">
+                <option value="@SituacaoImovelEnum.DESOCUPADO">Desocupado</option>
+                <option value="@SituacaoImovelEnum.OCUPADO_PROPRIETARIO">Ocupado pelo Propriet&aacute;rio</option>
+                <option value="@SituacaoImovelEnum.LOCADO">Locado</option>
+                <option value="@SituacaoImovelEnum.RESERVADO">Reservado</option>
+                <option value="@SituacaoImovelEnum.EM_CONSTRUCAO">Em Constru&ccedil;&atilde;o</option>
+                <option value="@SituacaoImovelEnum.LANCAMENTO">Lan&ccedil;amento</option>
+            </InputSelect>
+        </div>
+    </div>
+
+    <div>
+        <label for="nomeconstrutora" class="desc">Nome da Construtora</label>
+        <div><InputText id="nomeconstrutora" @bind-Value="data.NomeConstrutora" class="text"></InputText></div>
+        <div><ValidationMessage For="() => data.NomeConstrutora"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="anoconstrucao" class="desc">Ano de Constru&ccedil;&atilde;o</label>
+        <div><InputNumber id="anoconstrucao" @bind-Value="data.AnoConstrucao" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.AnoConstrucao"></ValidationMessage></div>
+    </div>
+
+    <div>
+        <label for="anoultimareforma" class="desc">Ano da &Uacute;ltima Reforma</label>
+        <div><InputNumber id="anoultimareforma" @bind-Value="data.AnoUltimaReforma" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.AnoUltimaReforma"></ValidationMessage></div>
+    </div>
+
+    <RadioSimNao Legend="Aceita Financiamento?" GroupName="aceita_financiamento"
+                 Id="aceita_financiamento" @bind-Value="data.AceitaFinanciamento"></RadioSimNao>
+
+    <RadioSimNao Legend="Estuda Proposta de Permuta?" GroupName="estuda_proposta_permuta"
+                 Id="estuda_proposta_permuta" @bind-Value="data.EstudaPropostaPermuta"></RadioSimNao>
+
+    <div>
+        <fieldset>
+            <legend class="desc">
+                Tipo de Capita&ccedil;&atilde;o
+            </legend>
+            <div>
+                <div>
+                    <InputCheckbox id="tipocapitacaovenda" @bind-Value="data.TipoCapitacaoVenda"></InputCheckbox>
+                    <label for="tipocapitacaovenda" class="desc">Venda</label>
+                </div>
+
+                <div>
+                    <InputCheckbox id="tipocapitacaolocacao" @bind-Value="data.TipoCapitacaoLocacao"></InputCheckbox>
+                    <label for="tipocapitacaolocacao" class="desc">Loca&ccedil;&atilde;o</label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <RadioSimNao Legend="Portaria 24h?" GroupName="portaria_24h"
+                 Id="portaria_24h" @bind-Value="data.Portaria24h"></RadioSimNao>
+
+    <RadioSimNao Legend="Aceita Pet?" GroupName="aceita_pet"
+                 Id="aceita_pet" @bind-Value="data.AceitaPet"></RadioSimNao>
+
+    <div>
+        <label for="valorvenda" class="desc">Valor de Venda(loca&ccedil;&atilde;o?)</label>
+        <div><InputNumber id="valorvenda" Value="@data.ValorVenda" TValue="float" ValueChanged="(v) => CalcularComissao(v)" ValueExpression="()=>data.ValorVenda" class="text"></InputNumber></div>
+        <div><ValidationMessage For="() => data.ValorVenda"></ValidationMessage></div>
+        @if (data.ValorVenda > 0)
+        {
+            <div>Comiss&atilde;o de @(percentage + @"%") no Valor de R$@data.Comissao</div>
+        }
+    </div>
+
+    <div>
+        <label for="descricao" class="desc">Descri&ccedil;&atilde;o</label>
+        <div><InputTextArea id="descricao" @bind-Value="data.Descricao" class="text"></InputTextArea></div>
+        <div><ValidationMessage For="() => data.Descricao"></ValidationMessage></div>
+    </div>
+
     <div>
         <div>
-            <button @onclick="Voltar">Voltar</button>
+            <button type="button" @onclick="Voltar">Voltar</button>
         </div>
     </div>
 
     <div>
         <div>
-            <button type="submit">Salvar</button>
+            <button type="submit">Pr&oacute;ximo</button>
         </div>
     </div>
 </EditForm>
@@ -22,11 +300,52 @@ Testando mudança
     [Parameter]
     public EventCallback<int> OnVoltarClicked { get; set; }
 
-    DadosProprietario data = new();
+    [Parameter]
+    public DadosPrimarioImovel data { get; set; }
 
-    public void SaveForm()
+    public float percentage = 6;
+
+    public async Task BuscarEndereco(string cep)
     {
-        //result = "Form Saved";
+        data.CEP = cep;
+
+        var request = new HttpRequestMessage(HttpMethod.Get, $"http://viacep.com.br/ws/{cep}/json/");
+
+        var client = ClientFactory.CreateClient();
+
+        var response = await client.SendAsync(request);
+
+        if (response.IsSuccessStatusCode)
+        {
+            //{  "cep": "24452-005",  "logradouro": "Rua Doutor Alfredo Backer",  "complemento": "até 598 - lado par",  "bairro": "Alcântara",  "localidade": "São Gonçalo",  "uf": "RJ",  "ibge": "3304904",  "gia": "",  "ddd": "21",  "siafi": "5897"}
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            ViaCEPData endereco = await JsonSerializer.DeserializeAsync<ViaCEPData>(responseStream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            
+            data.Logradouro = endereco.Logradouro;
+            data.Bairro = endereco.Bairro;
+            data.Cidade = endereco.Localidade;
+            data.Estado = endereco.Uf;
+        }
+        else
+        {
+
+        }
+    }
+
+    public async Task CalcularComissao(float v)
+    {
+        data.ValorVenda = v;
+
+        await Task.Run(() =>
+        {
+            if (v > 400000) percentage = 5;
+            data.Comissao = v * (percentage / 100);
+        });
+    }
+
+    public async Task SaveForm()
+    {
+        await OnVoltarClicked.InvokeAsync(1);
     }
 
     public async Task Voltar()

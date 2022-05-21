@@ -1,4 +1,6 @@
-﻿namespace AndreBroker.Data;
+﻿using FluentValidation;
+
+namespace AndreBroker.Data;
 
 public class DadosEstruturaisImovel
 {
@@ -6,7 +8,9 @@ public class DadosEstruturaisImovel
     public int QuantidadeSuites { get; set; }
     public bool PossuiCloset { get; set; }
     public bool PossuiComodoReversivel { get; set; }
-    public ComodoReversivelEnum ComodoReversivel { get; set; }
+    public bool ComodoReversivelSala { get; set; }
+    public bool ComodoReversivelQuarto { get; set; }
+    public bool ComodoReversivelBanheiro { get; set; }
     public int QuantidadeBanheiros { get; set; }
     public bool PossuiLavabo { get; set; }
     public bool PossuiHidromassagem { get; set; }
@@ -21,6 +25,7 @@ public class DadosEstruturaisImovel
     public bool PossuiAreaServico { get; set; }
     public string TipoPiso { get; set; }
 
+    public bool PossuiAguaAquecidaAGas { get; set; }
     public bool PossuiArmarioEmbutidoSala { get; set; }
     public bool PossuiArmarioEmbutidoQuarto { get; set; }
     public bool PossuiArmarioEmbutidoBanheiro { get; set; }
@@ -59,4 +64,13 @@ public class DadosEstruturaisImovel
     public string Espelho_File { get; set; }
 
     public bool AutorizoIntermediacao { get; set; }
+}
+
+public class DadosEstruturaisImovelValidator : AbstractValidator<DadosEstruturaisImovel>
+{
+    public DadosEstruturaisImovelValidator()
+    {
+        RuleFor(obj => obj.AutorizoIntermediacao)
+        .Equal(true).WithMessage("É necessário autorizar a intermediação do imóvel");
+    }
 }
