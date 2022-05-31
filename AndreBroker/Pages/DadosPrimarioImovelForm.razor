@@ -22,7 +22,7 @@
 
     <div>
         <label for="numero" class="desc">N&uacute;mero</label>
-        <div><InputNumber id="numero" @bind-Value="data.Numero" class="text"></InputNumber></div>
+        <div><InputText id="numero" @bind-Value="data.Numero" class="text"></InputText></div>
         <div><ValidationMessage For="() => data.Numero"></ValidationMessage></div>
     </div>
 
@@ -118,6 +118,11 @@
                         <InputRadio id="posicao_sol_tarde" Value="@PosicaoSolEnum.TARDE" Name="PosicaoSol"></InputRadio>
                         <label for="posicao_sol_tarde" class="choice">Tarde</label>
                     </div>
+
+                    <div>
+                        <InputRadio id="posicao_sol_nao_sei" Value="@PosicaoSolEnum.NAO_SEI" Name="PosicaoSol"></InputRadio>
+                        <label for="posicao_sol_nao_sei" class="choice">N&atilde;o Sei Informar</label>
+                    </div>
                 </InputRadioGroup>
 
             </div>
@@ -127,7 +132,7 @@
     <div>
         <fieldset>
             <legend class="desc">
-                Posi&ccedil;&atilde;o do Im&otilde;vel
+                Posi&ccedil;&atilde;o do Im&oacute;vel
             </legend>
             <div>
                 <InputRadioGroup Name="PosicaoImovel" @bind-Value="data.PosicaoImovel">
@@ -204,7 +209,7 @@
 
     <div>
         <label class="desc" id="tsituacaoimovel_label" for="situacaoimovel">
-            Tipo
+            Situa&ccedil;&atilde;o
         </label>
         <div>
             <InputSelect id="situacaoimovel" class="field select medium" @bind-Value="data.SituacaoImovel">
@@ -249,18 +254,18 @@
             </legend>
             <div>
                 <div>
-                    <InputCheckbox id="tipocapitacaovenda" @bind-Value="data.TipoCapitacaoVenda"></InputCheckbox>
+                    <InputCheckbox id="tipocapitacaovenda" @bind-Value="data.TipoCaptacaoVenda"></InputCheckbox>
                     <label for="tipocapitacaovenda" class="desc">Venda</label>
                 </div>
 
                 <div>
-                    <InputCheckbox id="tipocapitacaolocacao" @bind-Value="data.TipoCapitacaoLocacao"></InputCheckbox>
+                    <InputCheckbox id="tipocapitacaolocacao" @bind-Value="data.TipoCaptacaoLocacao"></InputCheckbox>
                     <label for="tipocapitacaolocacao" class="desc">Loca&ccedil;&atilde;o</label>
                 </div>
             </div>
         </fieldset>
     </div>
-
+    
     <RadioSimNao Legend="Portaria 24h?" GroupName="portaria_24h"
                  Id="portaria_24h" @bind-Value="data.Portaria24h"></RadioSimNao>
 
@@ -268,7 +273,7 @@
                  Id="aceita_pet" @bind-Value="data.AceitaPet"></RadioSimNao>
 
     <div>
-        <label for="valorvenda" class="desc">Valor de Venda(loca&ccedil;&atilde;o?)</label>
+        <label for="valorvenda" class="desc">Valor de Venda</label>
         <div><InputNumber id="valorvenda" Value="@data.ValorVenda" TValue="float" ValueChanged="(v) => CalcularComissao(v)" ValueExpression="()=>data.ValorVenda" class="text"></InputNumber></div>
         <div><ValidationMessage For="() => data.ValorVenda"></ValidationMessage></div>
         @if (data.ValorVenda > 0)
@@ -277,11 +282,11 @@
         }
     </div>
 
-    <div>
+    @*<div>
         <label for="descricao" class="desc">Descri&ccedil;&atilde;o</label>
         <div><InputTextArea id="descricao" @bind-Value="data.Descricao" class="text"></InputTextArea></div>
         <div><ValidationMessage For="() => data.Descricao"></ValidationMessage></div>
-    </div>
+    </div>*@
 
     <div>
         <div>

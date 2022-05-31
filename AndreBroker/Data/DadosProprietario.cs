@@ -11,7 +11,7 @@ public class DadosProprietario
     public bool AutorizacaoVenda { get; set; }
     public string Telefone { get; set; }
     public string Celular { get; set; }
-    public bool IsWhatsApp { get; set; }
+    public bool IsWhatsApp { get; set; } = true;
     public TipoTelefoneEnum TipoTelefone { get; set; }
     public string Email { get; set; }
     public string CPF { get; set; }

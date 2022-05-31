@@ -18,7 +18,8 @@ public enum TipoImovelEnum
 public enum PosicaoSolEnum
 {
     MANHA,
-    TARDE
+    TARDE,
+    NAO_SEI
 }
 
 public enum PosicaoImovelEnum
@@ -44,7 +45,7 @@ public enum SituacaoImovelEnum
     LANCAMENTO
 }
 
-public enum TipoCapitacaoEnum
+public enum TipoCaptacaoEnum
 {
     VENDA,
     LOCACAO

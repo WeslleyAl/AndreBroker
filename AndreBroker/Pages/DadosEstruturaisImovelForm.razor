@@ -87,8 +87,11 @@
         </fieldset>
     </div>
 
-    <RadioSimNao Legend="Varanda Gourmet?" GroupName="varanda_gourmet"
+    @if (data.PossuiVaranda)
+    {
+        <RadioSimNao Legend="Varanda Gourmet?" GroupName="varanda_gourmet"
                  Id="varanda_gourmet" @bind-Value="data.PossuiVarandaGourmet"></RadioSimNao>
+    }
 
     <div>
         <fieldset>
@@ -276,7 +279,7 @@
 
                     <div>
                         <InputCheckbox id="possuicampoesporte" @bind-Value="data.PossuiCampoEsporte"></InputCheckbox>
-                        <label for="possuicampoesporte" class="desc">Campo de Esporte</label>
+                        <label for="possuicampoesporte" class="desc">Quadra Poliesportiva</label>
                     </div>
 
                     <div>
@@ -327,10 +330,12 @@
             <div>
                 <div>
                     <InputCheckbox id="autorizointermediacao" @bind-Value="data.AutorizoIntermediacao"></InputCheckbox>
-                    <label for="autorizointermediacao" class="desc">Autorizo a intermediação da venda do imóvel (Adicionar se ele optou por Exclusividade ou não) 
-                        acima pelo corretor\captador CARLOS ANDRÉ MACHADO VIEIRA sob o CRECI-RJ 086232, e concordo com o pagamento da 
-                        comissão de @(@"R$" + comissao) calculado sobre o valor de venda do imóvel, a ser pago no ato da assinatura do 
-                        contrato de compra e venda ou escritura.</label>
+                    <label for="autorizointermediacao" class="desc">
+                        Autorizo a intermediação da venda do imóvel (Adicionar se ele optou por Exclusividade ou não)
+                        acima pelo corretor\captador CARLOS ANDRÉ MACHADO VIEIRA sob o CRECI-RJ 086232, e concordo com o pagamento da
+                        comissão de @(@"R$" + comissao) calculado sobre o valor de venda do imóvel, a ser pago no ato da assinatura do
+                        contrato de compra e venda ou escritura.
+                    </label>
 
                     <div><ValidationMessage For="() => data.AutorizoIntermediacao"></ValidationMessage></div>
                 </div>
